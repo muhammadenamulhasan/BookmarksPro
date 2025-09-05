@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pro Bookmarks-Enamul Hasan</title>
+<style>
+:root{
+  --bg:#071021;
+  --glass: rgba(255,255,255,0.03);
+  --glass-border: rgba(255,255,255,0.04);
+}
+*{box-sizing:border-box;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+html,body{height:100%;margin:0;background:linear-gradient(180deg,#02030a 0%, #071021 40%, #051827 100%);color:#dbeafe}
+.wrap{max-width:100%;margin:0 auto;padding:16px}
+
+.heading{position:relative;overflow:hidden;padding:18px;border-radius:16px;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid var(--glass-border);backdrop-filter: blur(6px);}
+.heading h1{margin:0;font-size:clamp(18px, 2.5vw, 28px);letter-spacing:0.6px;font-weight:700;position:relative;padding:6px 10px;text-align:center;}
+.rgb-strip{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(90deg, rgba(255,0,128,0.08), rgba(0,200,255,0.1), rgba(0,255,120,0.08));transform:translateX(-120%);animation: slideLR 3.6s linear infinite;}
+.rgb-strip.rev{animation-direction:reverse;animation-duration:4.8s}
+@keyframes slideLR{0%{transform:translateX(-120%)}50%{transform:translateX(20%)}100%{transform:translateX(120%)}}
+
+.controls{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.search{flex:1;display:flex;align-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:8px;border-radius:12px;border:1px solid var(--glass-border)}
+.search input{background:transparent;border:0;outline:none;color:#e6f7ff;font-size:15px;width:100%}
+.btn{min-width:56px;padding:10px 12px;border-radius:12px;background:linear-gradient(180deg, rgba(0,255,200,0.06), rgba(0,255,200,0.03));border:1px solid rgba(0,255,200,0.14);color:#eafff6;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;border:1px solid var(--glass-border);color:#9fb4c8}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(160px,1fr));gap:12px;margin-top:14px}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px;border:1px solid var(--glass-border);display:flex;gap:10px;align-items:center;cursor:pointer;position:relative;transition:transform .18s, box-shadow .18s;}
+.card:hover{transform:translateY(-6px);box-shadow:0 10px 34px rgba(0,200,255,0.06);}
+.icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);overflow:hidden}
+.icon img{width:24px;height:24px;object-fit:contain}
+.title{font-size:13px;font-weight:600;z-index:1;}
+.url{font-size:11px;color:#9fb4c8;z-index:1;}
+.highlight{background:linear-gradient(90deg, rgba(255,0,128,0.12), rgba(0,200,255,0.12));padding:2px 6px;border-radius:6px}
+
+.modal{position:fixed;inset:0;background:linear-gradient(180deg, rgba(2,6,18,0.6), rgba(3,7,21,0.6));display:flex;align-items:center;justify-content:center;backdrop-filter: blur(6px);padding:18px;z-index:40;display:none}
+.panel{width:100%;max-width:400px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:14px;border:1px solid var(--glass-border)}
+.panel label{display:block;font-size:12px;color:#9fb4c8;margin-top:8px}
+.panel input{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#dbeafe}
+.panel .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+footer{margin-top:18px;text-align:center;color:#8fa9bb;font-size:12px;padding:10px}
+input:focus{box-shadow:0 6px 32px rgba(0,255,200,0.06);outline:none;border-color:rgba(0,255,200,0.18)}
+
+@media (max-width:600px){
+  .grid{grid-template-columns:repeat(auto-fill, minmax(140px,1fr));}
+  .card{flex-direction:column;align-items:flex-start}
+  .controls{flex-direction:column;align-items:stretch}
+  .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="heading">
+    <div class="rgb-strip"></div>
+    <div class="rgb-strip rev"></div>
+    <h1 id="mainHeading">Pro Bookmarks</h1>
+    <div class="controls">
+      <div class="search">
+        <svg width="18" viewBox="0 0 24 24" style="opacity:0.7;margin-right:8px"><path fill="#9fb4c8" d="M21 21l-4.35-4.35"/><circle cx="11" cy="11" r="6" fill="none" stroke="#9fb4c8" stroke-width="1.2"/></svg>
+        <input id="search" placeholder="Search" />
+      </div>
+      <button class="btn" id="addBtn">Add New</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <footer>&copy; Pro Bookmarks - Enamul Hasan</footer>
+</div>
+
+<div id="modal" class="modal">
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <strong id="modalTitle">Add Bookmark</strong>
+      <button id="closeModal" class="btn ghost">Close</button>
+    </div>
+    <label for="bkName">Name</label>
+    <input id="bkName" placeholder="Google, YouTube, Facebook, My Site..." />
+    <label for="bkLink">Link (include https://)</label>
+    <input id="bkLink" placeholder="https://github.com/muhammadenamulhasan" />
+    <div class="actions">
+      <button id="deleteBtn" class="btn ghost" style="display:none">Delete</button>
+      <button id="saveBtn" class="btn">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const defaults = [
+    { name: "Google", url: "https://www.google.com" },
+    { name: "YouTube", url: "https://www.youtube.com" },
+    { name: "Facebook", url: "https://www.facebook.com" },
+    { name: "LinkedIn", url: "https://www.linkedin.com" },
+    { name: "GitHub", url: "https://github.com" },
+    { name: "Upwork", url: "https://www.upwork.com" },
+    { name: "Freelancer", url: "https://www.freelancer.com" },
+  ];
+
+  const grid=document.getElementById('grid'),
+        search=document.getElementById('search'),
+        addBtn=document.getElementById('addBtn'),
+        modal=document.getElementById('modal'),
+        closeModal=document.getElementById('closeModal'),
+        saveBtn=document.getElementById('saveBtn'),
+        deleteBtn=document.getElementById('deleteBtn'),
+        bkName=document.getElementById('bkName'),
+        bkLink=document.getElementById('bkLink'),
+        modalTitle=document.getElementById('modalTitle');
+
+  let items = JSON.parse(localStorage.getItem('enam_bookmarks')||'null');
+  if(!items){ 
+    items = defaults.map(it => ({ ...it, iconUrl: faviconUrl(it.url) }));
+    localStorage.setItem('enam_bookmarks', JSON.stringify(items)); 
+  }
+
+  let editIndex=null;
+
+  function saveItems(){ localStorage.setItem('enam_bookmarks', JSON.stringify(items)); }
+  function escapeHtml(t){ return String(t).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[s])); }
+  function shortenUrl(u){ try{return new URL(u).hostname.replace('www.','');}catch(e){return u;} }
+  function highlight(text,q){ if(!q) return escapeHtml(text); const re=new RegExp(`(${q.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')})`,'gi'); return escapeHtml(text).replace(re,'<span class="highlight">$1</span>'); }
+
+  // Auto favicon fetcher
+  function faviconUrl(url){
+    try{
+      const domain = new URL(url).hostname;
+      return `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+    }catch(e){ return ''; }
+  }
+
+  function render(filter=''){
+    grid.innerHTML='';
+    const q=filter.trim().toLowerCase();
+    items.forEach((it,idx)=>{
+      const name=it.name||it.url;
+      if(q && !(name.toLowerCase().includes(q) || it.url.toLowerCase().includes(q))) return;
+      const card=document.createElement('div');
+      card.className='card';
+      card.dataset.index=idx;
+      const favicon = faviconUrl(it.url);
+      card.innerHTML=`
+        <div class='icon' aria-hidden>
+          ${favicon ? `<img src="${favicon}" alt="icon">` : `<svg width="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#fff"/></svg>`}
+        </div>
+        <div style='flex:1'>
+          <div class='title'>${highlight(name,q)}</div>
+          <div class='url'>${highlight(shortenUrl(it.url),q)}</div>
+        </div>
+        <div style='display:flex;flex-direction:column;gap:6px'>
+          <button class='btn ghost openBtn' style='padding:6px 8px'>Open</button>
+          <button class='btn ghost editBtn' style='padding:6px 8px'>Edit</button>
+        </div>
+      `;
+      card.querySelector('.openBtn').addEventListener('click', e=>{ e.stopPropagation(); window.open(it.url,'_blank'); });
+      card.querySelector('.editBtn').addEventListener('click', e=>{
+        e.stopPropagation();
+        editIndex=idx;
+        bkName.value=it.name; bkLink.value=it.url;
+        modalTitle.textContent='Edit Bookmark';
+        deleteBtn.style.display='inline-block';
+        modal.style.display='flex';
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  search.addEventListener('input', ()=>render(search.value));
+
+  addBtn.addEventListener('click', ()=>{
+    editIndex=null;
+    bkName.value=''; bkLink.value='';
+    modalTitle.textContent='Add Bookmark';
+    deleteBtn.style.display='none';
+    modal.style.display='flex';
+    bkName.focus();
+  });
+
+  closeModal.addEventListener('click', ()=>modal.style.display='none');
+
+  saveBtn.addEventListener('click', ()=>{
+    const name=bkName.value.trim(), url=bkLink.value.trim();
+    if(!url) return alert('Enter valid URL!');
+    const iconUrl=faviconUrl(url);
+    if(editIndex!==null){ items[editIndex]={name,url,iconUrl}; editIndex=null; }
+    else items.push({name,url,iconUrl});
+    saveItems(); render(search.value); modal.style.display='none';
+  });
+
+  deleteBtn.addEventListener('click', ()=>{
+    if(editIndex!==null && confirm('Delete this bookmark?')){
+      items.splice(editIndex,1);
+      editIndex=null;
+      saveItems(); render(search.value); modal.style.display='none';
+    }
+  });
+
+  render();
+})();
+
+</script>
+</body>
+</html>
