@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pro Bookmarks-Enamul Hasan</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<div class="wrap">
+  <div class="heading">
+    <div class="rgb-strip"></div>
+    <div class="rgb-strip rev"></div>
+    <h1 id="mainHeading">Pro Bookmarks</h1>
+    <div class="controls">
+      <div class="search">
+        <svg width="18" viewBox="0 0 24 24" style="opacity:0.7;margin-right:8px"><path fill="#9fb4c8" d="M21 21l-4.35-4.35"/><circle cx="11" cy="11" r="6" fill="none" stroke="#9fb4c8" stroke-width="1.2"/></svg>
+        <input id="search" placeholder="Search" />
+      </div>
+      <button class="btn" id="addBtn">Add New</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <footer>&copy; Pro Bookmarks - Enamul Hasan</footer>
+</div>
+
+<div id="modal" class="modal">
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <strong id="modalTitle">Add Bookmark</strong>
+      <button id="closeModal" class="btn ghost">Close</button>
+    </div>
+    <label for="bkName">Name</label>
+    <input id="bkName" placeholder="Google, YouTube, Facebook, My Site..." />
+    <label for="bkLink">Link (include https://)</label>
+    <input id="bkLink" placeholder="https://github.com/muhammadenamulhasan" />
+    <div class="actions">
+      <button id="deleteBtn" class="btn ghost" style="display:none">Delete</button>
+      <button id="saveBtn" class="btn">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
